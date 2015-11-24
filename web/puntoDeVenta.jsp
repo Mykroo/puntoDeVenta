@@ -38,34 +38,46 @@ HttpSession sesion = request.getSession();
                     <!--Inicia Menu-->
                     <div class="collapse navbar-collapse" id="navegacion1">
                         <ul class="nav navbar-nav">
-                            <li><a href="puntoDeVenta.jsp">Venta</a></li>
+                            <li><a href="puntoDeVenta.jsp">1</a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Administrar productos <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Productos <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="productos/altaProducto.jsp"><span class="glyphicon glyphicon-plus"></span> Agregar producto</a></li>
+                                    <li><a href="productos/productos.jsp">Productos</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="productos/bajaProducto.jsp"><span class="glyphicon glyphicon-minus"></span> Eliminar producto</a></li>
+                                    <li><a href="categorias/categorias.jsp">Categorías</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="productos/modificarProducto.jsp"><span class="glyphicon glyphicon-pencil"></span> Modificar producto</a></li>
+                                    <li><a href="marcas/marcas.jsp">Marcas</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="productos/catalogoProducto.jsp"><span class="icon-list2"></span> Lista de productos</a></li>
+                                    <li><a href="productos/productosFallados.jsp">Productos fallados</a></li>                                   
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Administrar proveedores <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Proveedores <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="proveedores/altaProveedor.jsp"><span class="icon-user-plus"></span> Agregar proveedor</a></li>
+                                    <li><a href="proveedores/proveedores.jsp"><span class="icon-users"></span> Proveedores</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="proveedores/bajaProveedor.jsp"><span class="icon-user-minus"></span> Eliminar proveedor</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="proveedores/modificarProveedor.jsp"><span class="icon-user"></span> Modificar proveedor</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="proveedores/catalogoProveedor.jsp"><span class="icon-list2"></span> Lista de proveedores</a></li>                            
+                                    <li><a href="proveedores/abonoProveedor.jsp"><span class="icon-coin-dollar"></span> Pago a proveedores</a></li>                                   
                                 </ul>
-                            </li>
+                            </li>                  
+                            <li><a href="clientes/clientes.jsp">Clientes</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Caja <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="caja/fondoDeCaja.jsp"><span class="icon-drawer"></span> Fondo de caja</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="caja/corte.jsp"><span class="icon-scissors"></span> Corte</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="caja/movimientos.jsp"><span class="icon-tab"></span> Movimientos de caja</a></li>
+                                </ul>
+                            </li>                            
                             <li ><a href="#">Reportes</a></li>
-                            <li><a href="closeSession.jsp">Cerrar sesión</a></li>
-                            <li><a>Usuario: <%=sesion.getAttribute("nombre")%></a></li>                            
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"> <%=sesion.getAttribute("nombre")%> <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">                                    
+                                    <li><a href="closeSession.jsp">Cerrar sesión</a></li>                                  
+                                </ul>
+                            </li>
+                           
                         </ul>
                     </div>
                 </div>
@@ -129,20 +141,84 @@ HttpSession sesion = request.getSession();
                       </form>
                 </div>
             </div>
-            <button class="btn btn-success" id = "terminaVentaBtn" disabled="disabled" onclick="$('#formularioTabla').submit()">
-                Realizar compra 
-                <span class="glyphicon glyphicon-check"></span>
-            </button> 
-        </div>
-      
-        
-        <div id="footer">
-            <div class="container">
-                <br>
-               
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-10">
+                    <button class="btn btn-info" id = "terminaVentaBtn" disabled="disabled" onclick="$('#formularioTabla').submit()">
+                        Realizar compra 
+                        <span class="glyphicon glyphicon-check"></span>
+                    </button>
+                </div>
+                
+                <div class="col-xs-2 col-sm-1 col-md-1">
+                    <br>
+                    <button class="btn btn-warning" data-toggle="modal" href='#modal-salidaCaja' onclick="setTimeout(function(){ foco('cantidadSalida'); },500);" title="Salida de caja"><span class="icon-arrow-left"></span> $</button>
+                </div>
+                
+                <div class="col-xs-2 col-sm-1 col-md-1">
+                    <br>
+                    <button class="btn btn-success" title="Entrada de caja" data-toggle="modal" href='#modal-entradaCaja' onclick="setTimeout(function(){ foco('cantidadEntrada'); },500);"><span class="icon-arrow-right"></span> $</button>
+                </div>
             </div>
         </div>
+      
+        <div class="modal fade" id="modal-salidaCaja">
+            <div class="modal-dialog">
+		<div class="modal-content">
+                    <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Salida de caja</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-salidaCaja">
+                            <div class="form-group">
+                                <label class="control-label" for="cantidad1">Cantidad</label>
+                                <input type="number" step="0.1" min="0" onkeypress="if(enter(event.keyCode)){foco('conceptoSalida');}" title="Cantidad de salida $" class="form-control" id="cantidadSalida" name="cantidad1">
+                                <br>
+                                <label class="control-label" for="concepto1">Concepto</label>
+                                <textarea class="form-control" name="concepto1" id="conceptoSalida"></textarea>
+                                <input type="hidden" name="movimiento" value="1">
+                            </div> 
+                            <div id="msjSalida"></div>
+                        </form>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" onclick="$('#msjSalida').hide()" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="salidaCaja()" id="btnGuardarSalida">Guardar salida</button>
+                    </div>
+		</div>
+            </div>
+        </div>                  
         
+        <div class="modal fade" id="modal-entradaCaja">
+            <div class="modal-dialog">
+		<div class="modal-content">
+                    <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Entrada de caja</h4>
+                    </div>
+                    <div class="modal-body">
+	    		<form id="form-entradaCaja">
+                            <div class="form-group">
+                                <label class="control-label" for="cantidad2">Cantidad</label>
+                                <input type="number" step="0.1" onkeypress="if(enter(event.keyCode)){foco('conceptoEntrada');}" min="0" title="Cantidad de entrada $" class="form-control" id="cantidadEntrada" name="cantidad2">
+                                <br>
+                                <label class="control-label" for="concepto2">Concepto</label>
+                                <textarea class="form-control"  name="concepto2" id="conceptoEntrada"></textarea>
+                                <input type="hidden" name="movimiento" value="2">
+                            </div>
+                            <div id="msjEntrada"></div>
+                        </form>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" onclick="$('#msEntrada').hide()" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="entradaCaja()" id="btnGuardarEntrada">Guardar entrada</button>
+                    </div>
+		</div>
+            </div>
+        </div>                         
+                                
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src ="js/bootstrap.min.js"></script>
         <script type="text/javascript" src ="js/jquery.validate.min.js"></script>
@@ -212,7 +288,49 @@ HttpSession sesion = request.getSession();
                 if(numFilas === 0){
                     $("#terminaVentaBtn").attr("disabled","disabled");
                 }
-            }  
+            }
+            
+            function salidaCaja(){
+                if(isNaN($("#cantidadSalida").val()) || $("#cantidadSalida").val()===""){
+                    var mensaje = "<div id='mensaje' class='col-md-12 animated slideInRight'> "
+                    + "<div class='alert alert-danger' role='alert'>"
+                    + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                    + "<span aria-hidden='true'> &times;</span></button><strong>Error. </strong>"
+                    + "Ingrese una cantidad válida."
+                    + "</div></div>";
+                     $("#msjSalida").html(mensaje);
+                }
+                else{                                   
+                    $.post("caja/movimientosCaja.jsp",$("#form-salidaCaja").serialize(), function(res){
+                        $("#msjSalida").html(res.msj);
+                        if(res.tipo==="exito"){
+                            document.getElementById("form-salidaCaja").reset();
+                        }
+                    },"json");
+                }
+            }
+            function entradaCaja(){
+                 if(isNaN($("#cantidadEntrada").val()) || $("#cantidadEntrada").val()===""){
+                    var mensaje = "<div id='mensaje' class='col-md-12 animated slideInRight'> "
+                    + "<div class='alert alert-danger' role='alert'>"
+                    + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                    + "<span aria-hidden='true'> &times;</span></button><strong>Error. </strong>"
+                    + "Ingrese una cantidad válida."
+                    + "</div></div>";
+                     $("#msjEntrada").html(mensaje);
+                }
+                else{
+                    $.post("caja/movimientosCaja.jsp",$("#form-entradaCaja").serialize(), function(res){
+                        $("#msjEntrada").html(res.msj);
+                        if(res.tipo==="exito"){
+                           document.getElementById("form-entradaCaja").reset();
+                        }
+                    },"json");
+                }
+            }
+            
+            bloqueaForm("form-salidaCaja");
+            bloqueaForm("form-entradaCaja");
         </script>
     </body>
 </html>

@@ -25,6 +25,7 @@
 
 html,
 body {
+  font-size: 12pt;
   height: 100%;
   /* The html and body elements cannot have any padding or margin. */
 }
@@ -66,3 +67,6 @@ table tbody tr td{
 .info th{
     text-align: center;
 }
+
+
+

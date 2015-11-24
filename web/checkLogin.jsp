@@ -26,6 +26,7 @@
             sesion.setAttribute("idUsuario",objConn.rs.getString(1));
             sesion.setAttribute("nombre", objConn.rs.getString(2));            
             sesion.setAttribute("permiso",objConn.rs.getString(3)); 
+            sesion.setMaxInactiveInterval(-1);
             json.put("respuesta", "1"); 
             objConn.Update("insert into iniciosdesesion values (default,"+objConn.rs.getString(1)+",now());");
         }
@@ -38,9 +39,10 @@
                 + "</div></div></div>"; 
               json.put("respuesta", mensaje);
         }
+        objConn.desConnect(); 
         out.print(json);
         out.flush();
-        objConn.desConnect(); 
+ 
     }
             
 %>

@@ -176,7 +176,7 @@ HttpSession sesion = request.getSession();
                         </label>
                     </div>
                     <div class="col-xs-2 col-sm-1">
-                        <button class=" btn btn-warning" type="button" title="Regresar" value="back" onclick="history.back();"><span class="icon icon-undo2"></span></button>
+                        <button class=" btn btn-warning" type="button" title="Regresar" value="back" onclick="history.back(-1);"><span class="icon icon-undo2"></span></button>
                     </div>
                         
                     <div class="col-xs-10 col-sm-6">
@@ -227,11 +227,11 @@ HttpSession sesion = request.getSession();
                 <div class="row container">
                     <div class="form-group col-xs-10 col-sm-5">
                         <label for="descuento">Descuento $</label>
-                        <input class="form-control" type="number" min="0" max="<%=totalGeneral%>" name="descuento" id="descuento" tabindex="1" onkeypress="if(enter(event.keyCode)){if($('#descuento').val()===''){$('#descuento').val('0'); foco('cantidadRecibida');}if($('#descuento').val()!=='0'){foco('descuentoBtn');}else{foco('cantidadRecibida');}}else{desactivaTerminaVenta();}">
+                        <input class="form-control" type="number" min="0" max="<%=totalGeneral%>" name="descuento" id="descuento" tabindex="1" onkeypress="if(enter(event.keyCode)){if($('#descuento').val()==='0'){$('#descuento').val('0');} foco('descuentoBtn')}else{desactivaTerminaVenta();}">
                      </div>
                      
                     <div class="form-group col-xs-2 col-sm-1">
-                        <button class="btn btn-success btn-termVenta" title="Aplicar descuento" type="button" id="descuentoBtn" onclick="descuenta(<%=totalGeneral%>); foco('cantidadRecibida')" tabindex="2"><span class="icon icon-arrow-right2"></span></button>
+                        <button class="btn btn-success btn-termVenta" title="Aplicar descuento" type="button" id="descuentoBtn" onclick="foco('cantidadRecibida'); descuenta(<%=totalGeneral%>); " tabindex="2"><span class="icon icon-arrow-right2"></span></button>
                     </div>
                     
                     <div class="form-group col-xs-12 col-sm-6">
@@ -262,7 +262,7 @@ HttpSession sesion = request.getSession();
         </form>
         <div class="container">
             <div class="container">
-                <button class="btn btn-info" id="btnTarjeta" data-toggle="modal" href='#modal-tarjeta' onclick="pagoTarjeta();" type="button"><span class="icon-credit-card"></span></button>
+                <button class="btn btn-info" id="btnTarjeta" disabled data-toggle="modal" href='#modal-tarjeta' onclick="pagoTarjeta();" type="button"><span class="icon-credit-card"></span></button>
                 <button class="btn btn-success" title="Terminar venta" onclick="cobrar()" id="btnTermina" disabled  tabindex="5" ><span class="glyphicon glyphicon-usd"></span> Cobrar</button>
             </div>
         </div>
@@ -301,8 +301,13 @@ HttpSession sesion = request.getSession();
 		</div>
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-sm-offset-2 col-md-4 col-md-offset-3">
+                <div id="msj"></div>
+            </div>
+        </div>
         
-        <div id="msj"></div>
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/jquery.validate.min.js"></script>
         <script type="text/javascript" src ="js/bootstrap.min.js"></script>
@@ -325,7 +330,13 @@ HttpSession sesion = request.getSession();
                     efectivo = 0;
                     $("#cantidadRecibida").val(efectivo);
                 }
-                tarjeta = total - efectivo;
+                if(efectivo>=total){
+                    tarjeta = 0;
+                    efectivo = efectivo - (efectivo-total)
+                }
+                else{
+                   tarjeta = total - efectivo;
+                }
                 $("#tarjeta").val(tarjeta);
                 $("#infoModalTarjeta").html("<h3>Total: $"+total+" </h3><h3>Pago en efectivo: $"+efectivo+"</h3><h3>Pago con tarjeta: $"+tarjeta+"</h3>");
             }

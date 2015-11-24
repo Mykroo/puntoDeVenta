@@ -33,14 +33,12 @@
         ArrayList <Integer> cantidad = new ArrayList();
         ArrayList <Float> precio = new ArrayList();
         ArrayList <String> codigo = new ArrayList();
-        System.out.println("EMpiexo a llenar listas");
         for(int i=0;i<numFilas;i++){ 
             cantidad.add(Integer.parseInt(request.getParameter("cantidad"+i)));
             precio.add(Float.parseFloat(request.getParameter("precio"+i))); 
             codigo.add(request.getParameter("codigo"+i));
             idProducto.add(request.getParameter("idProd"+i));
         }
-        System.out.println("Aacbe de llenar lisras");
         String query = "insert into ventatotal values (default,"+idUsuario+",now(),"+total+","+descuento+","+cliente+","+efectivo+","+tarjeta+");";
         int idVentaTotal = objConn.Update2(query); 
         
