@@ -25,7 +25,6 @@ function checaCambio(){
             var cambio = recibida-total;
             $("#cambio").val(cambio);
              document.getElementById("btnTermina").disabled = false;
-<<<<<<< HEAD
               document.getElementById("btnTarjeta").disabled = true;
              return true;
         }
@@ -134,55 +133,6 @@ function isDate(txtDate)
     return true;
 }
 
-=======
-             return true;
-        }
-        else{
-            document.getElementById("btnTermina").disabled = true;
-            return false;
-        }
-    }
-    else{
-        document.getElementById("btnTermina").disabled = true;
-        return false;
-    }
-}
-
-function desactivaTerminaVenta(){
-    document.getElementById("btnTermina").disabled = true;
-}
-            
-function descuenta (total){
-    var totalFinal = total - $("#descuento").val();
-    $("#total").val(totalFinal);
-    $("#cantidadRecibida").attr("min", totalFinal);
-}
-
-function catalogoModificarProducto(codigo){
-    $("#codigo").attr("value",codigo);
-    $("#formulario").submit();
-} 
-
-function catalogoModificarProveedor(proveedor){
-    $("#proveedor").attr("value",proveedor);
-    $("#formulario").submit();
-} 
-
-//Funciones para mostrar y ocultar el mensaje de producto sin existencias.
-function showMsj (){
-    $("#msj").show("");
-    
- }
- 
- function hideMsj (){
-     $("#msj").hide("slow");
-
- }
- 
- jQuery.fn.reset = function () {
-  $(this).each (function() { this.reset(); });
-}
->>>>>>> origin/master
 
 
     
