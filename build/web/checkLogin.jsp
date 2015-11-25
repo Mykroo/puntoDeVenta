@@ -26,7 +26,6 @@
             sesion.setAttribute("idUsuario",objConn.rs.getString(1));
             sesion.setAttribute("nombre", objConn.rs.getString(2));            
             sesion.setAttribute("permiso",objConn.rs.getString(3)); 
-<<<<<<< HEAD
             sesion.setMaxInactiveInterval(-1);
             json.put("respuesta", "1"); 
             objConn.Update("insert into iniciosdesesion values (default,"+objConn.rs.getString(1)+",now());");
@@ -44,23 +43,6 @@
         out.print(json);
         out.flush();
  
-=======
-            json.put("respuesta", "1"); 
-            objConn.Update("insert into iniciosdesesion values (default,"+objConn.rs.getString(1)+",now());");
-        }
-        else{
-             String mensaje = "<br><div class='row animated slideInLeft'> <div class='col-md-4 col-md-offset-3'>"
-                + "<div class='alert alert-danger' role='alert'>"
-                + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
-                + "<span aria-hidden='true'>&times;</span></button>"
-                + "<strong>Error.</strong> Usuario o contraseña incorrecta"
-                + "</div></div></div>"; 
-              json.put("respuesta", mensaje);
-        }
-        out.print(json);
-        out.flush();
-        objConn.desConnect(); 
->>>>>>> origin/master
     }
             
 %>
