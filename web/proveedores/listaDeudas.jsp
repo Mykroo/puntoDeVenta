@@ -51,6 +51,7 @@ if(n>0){
                         tabla+="</tbody>"
                     +"</table>"
                 +"</div>";
+                              
     json.put("tabla", tabla);
     
 }else{

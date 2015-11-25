@@ -128,6 +128,13 @@ HttpSession sesion = request.getSession();
             <div class="row" id="contenido">
                 
             </div>
+            <div class="row" id="divFormAbonar">
+                <div class="form-inline">
+                    <form id="formAbonar">
+                        <label class="control-label" for="cantidad">Cantidad</label>
+                    </form>
+                </div>
+            </div>
             <div class="row" id="msj">
                 
             </div>
@@ -175,9 +182,7 @@ HttpSession sesion = request.getSession();
                     $.post("listaDeudas.jsp",{proveedor: proveedor}, function(res){
                         if(res.tabla !== undefined){
                             $("#contenido").html(res.tabla);
-                            $('#tablaDeudas').DataTable({paging:false,bInfo: false,bFilter: false,sScrollY :"300px", sScrollX : "100%",
-                                bScrollCollapse: true});
-                            
+                            $('#tablaDeudas').DataTable({paging:false,bInfo: false,bFilter: false});                                                                                                      
                         }
                         else if(res.error !== undefined){
                             $("#msj").html(res.error);

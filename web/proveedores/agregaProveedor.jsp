@@ -1,6 +1,6 @@
 <%-- 
-    Document   : altaProveedorSis
-    Created on : 23/05/2015, 06:30:43 PM
+    Document   : agregaProveedor
+    Created on : 12/11/2015, 06:30:43 PM
     Author     : Ricardo
 --%>
 <%@page import="org.json.simple.JSONObject"%>
