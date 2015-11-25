@@ -125,19 +125,16 @@ HttpSession sesion = request.getSession();
                 </div>                                
             </div>
             <br>
-            <div class="row" id="contenido">
-                
-            </div>
-            <div class="row" id="divFormAbonar">
-                <div class="form-inline">
-                    <form id="formAbonar">
-                        <label class="control-label" for="cantidad">Cantidad</label>
-                    </form>
-                </div>
-            </div>
-            <div class="row" id="msj">
-                
-            </div>
+            
+            <div class="row" id="contenido"></div>            
+            
+            <div id="divFormAbonar"></div>
+            
+            <div class='row' id='contenidoAbonar'></div>
+            
+            <div class="row" id="msj"></div>
+            <br>
+            <br>
             
         </div>
               
@@ -166,7 +163,7 @@ HttpSession sesion = request.getSession();
         <script type="text/javascript" src = "../js/puntoDeVenta.js"></script>
         <script type="text/javascript" src ="../js/filtroTabla.js"></script>
         <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
-        <script type="text/javascript">                       
+        <script type="text/javascript">  
             function activaBtnBusca(){         
                 var proveedor = $("#proveedor").val();
                 if(proveedor !== "--- Elegir proveedor ---"){
@@ -182,6 +179,9 @@ HttpSession sesion = request.getSession();
                     $.post("listaDeudas.jsp",{proveedor: proveedor}, function(res){
                         if(res.tabla !== undefined){
                             $("#contenido").html(res.tabla);
+                            $("#divFormAbonar").html(res.form);
+                            $("#contenidoAbonar").html(res.tablaAbonar);
+                            $("#contenidoAbonar").hide();
                             $('#tablaDeudas').DataTable({paging:false,bInfo: false,bFilter: false});                                                                                                      
                         }
                         else if(res.error !== undefined){
@@ -211,6 +211,153 @@ HttpSession sesion = request.getSession();
                     }
                 },"json");
             }
+            
+            function cantidadAbonar(){
+                var cantidad = $("#cantidad").val();
+                var deuda = $("#totalDeuda").html();
+                if(isNaN(cantidad) || cantidad === "" || cantidad < 0){
+                    $("#msj").html("<div id='mensaje' class='col-sm-4 col-sm-offset-4 animated slideInRight'> "
+                            + "<div class='alert alert-danger' role='alert'>"
+                            + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                            + "<span aria-hidden='true'> &times;</span></button>"
+                            + "<strong>Error.</strong> Ingrese una cantidad válida."
+                            + "</div></div>");
+                }else if(cantidad > deuda){
+                     $("#msj").html("<div id='mensaje' class='col-sm-4 col-sm-offset-4 animated slideInRight'> "
+                            + "<div class='alert alert-danger' role='alert'>"
+                            + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                            + "<span aria-hidden='true'> &times;</span></button>"
+                            + "<strong>Error.</strong> No puedes abonar más de $"+deuda 
+                            + "</div></div>");
+                }
+                else{
+                    var cantidadRestante = cantidad;
+                    $("#msj").html("");
+                    $("#proveedor").attr('disabled','disabled');
+                    $("#contenido").hide("slow");
+                    $("#divFormAbonar").hide("slow");
+                    $("#contenidoAbonar").show("fast");
+                    $("#abono").html(cantidadRestante);
+                }
+            }
+            
+            function abona(i){
+                var a,d,abono;
+                //a = Cantidad a abonar.
+                //d = Deuda
+                //abono = abono general
+                a = parseFloat($("#a"+i).val());
+                a = Math.round(a*100)/100;
+                console.log("a: " +a);
+                d = parseFloat($("#d"+i).html());
+                d = Math.round(d*100)/100;
+                console.log("d: " +d);
+                abono = parseFloat($("#abono").html());                                
+                abono = Math.round(abono*100)/100;
+                console.log("abono: " +abono);
+                if($("#c"+i).is(':checked')) {
+                    //Activo la casilla
+                    abono = Math.round((abono + a)*100)/100;
+                    a = 0;
+                    if(abono === 0){
+                        alert("No hay abono a agregar");
+                        $("#c"+i).attr("checked",false);
+                        a = 0;
+                    }
+                    else{
+                        if(abono<d){
+                            a = abono;
+                            abono = Math.round((abono - a)*100)/100;
+                        }
+                        else{
+                            a = d;
+                            abono = Math.round((abono - a)*100)/100;
+                            $("#tr"+i).attr("style"," background-color: rgba(122, 211, 107, 0.5)");
+                        }
+                        if(abono === 0){
+                            $("#btnAbonar").attr("disabled",false);
+                        }
+                        else{
+                            $("#btnAbonar").attr("disabled",true);
+                        }
+                    }
+                }
+                else{
+                    //Desactivo la casilla
+                    abono = Math.round((abono + a)*100)/100;
+                    a = 0;
+                    $("#tr"+i).removeAttr("style");
+                    if(abono === 0){
+                        $("#btnAbonar").attr("disabled",false);
+                    }
+                    else{
+                        $("#btnAbonar").attr("disabled",true);
+                    }
+                }                
+                $("#a"+i).val(a);
+                $("#abono").html(abono);
+            }
+            
+            function borraCantidad(i){
+                var a = parseFloat($("#a"+i).val());
+                a = Math.round(a*100)/100;
+                var abono = parseFloat($("#abono").html());
+                abono = Math.round(abono*100)/100;
+                abono = Math.round((abono + a)*100)/100;
+                a = 0;                
+                $("#a"+i).val(a);
+                $("#abono").html(abono);
+                $("#tr"+i).removeAttr("style");
+                $("#c"+i).attr("checked",false);
+                $("#a"+i).select();
+                if(abono === 0){
+                    $("#btnAbonar").attr("disabled",false);
+                }
+                else{
+                    $("#btnAbonar").attr("disabled",true);
+                }
+                return 0;
+            }
+            
+            function checaCantidad(i){
+                var a,d,abono;
+                a = parseFloat($("#a"+i).val());
+                a = Math.round(a*100)/100;
+                d = parseFloat($("#d"+i).html());
+                d = Math.round(d*100)/100;
+                abono = parseFloat($("#abono").html());
+                abono = Math.round(abono*100)/100;
+                if(abono === 0){
+                    alert("No hay abono a agregar");
+                    a = 0;
+                }
+                else{
+                    if(isNaN(a)){
+                        a = 0;
+                    }
+                    else{
+                        if(a > abono){
+                            alert("No se completa la cantidad");
+                            a = 0;
+                        }else{
+                            abono = abono - a;
+                            if(a === d){
+                                $("#tr"+i).attr("style"," background-color: rgba(122, 211, 107, 0.5)");
+                            }
+                        }
+                        
+                        if(abono === 0){
+                            $("#btnAbonar").attr("disabled",false);
+                        }
+                        else{
+                            $("#btnAbonar").attr("disabled",true);
+                        }                      
+                    }
+                    $("#a"+i).val(a);
+                    $("#abono").html(Math.round(abono*100)/100);
+                }                
+            }
+            
         </script>
     </body>
 </html>
