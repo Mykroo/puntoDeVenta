@@ -130,7 +130,9 @@ HttpSession sesion = request.getSession();
             
             <div id="divFormAbonar"></div>
             
-            <div class='row' id='contenidoAbonar'></div>
+            <div class='row' id='contenidoAbonar'></div><br><br>
+            
+            <div class="row" id='barraProgreso'></div>
             
             <div class="row" id="msj"></div>
             <br>
@@ -155,6 +157,24 @@ HttpSession sesion = request.getSession();
             </div>
         </div>
                 
+        <div class="modal fade" id="modal-confirmaAbono">
+            <div class="modal-dialog">
+		<div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title">Abono</h3>
+                    </div>
+                    <div class="modal-body" id="detalle">
+                        <h4 id="msjConfirmar"></h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-success" onclick='realizaAbono()' data-dismiss="modal">Continuar</button>
+                    </div>
+		</div>
+            </div>
+        </div>
+                
         
         
         <script type="text/javascript" src="../js/jquery.js"></script>
@@ -174,6 +194,14 @@ HttpSession sesion = request.getSession();
             }
             
             function consultaDeudas(){
+                $("#barraProgreso").html("<div class='col-md-4 col-md-offset-4'>"
+                    +"<div class='progress'>"
+                    +"<div class='progress-bar  progress-bar-striped active' role='progressbar'"
+                    +" aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%'>"
+                    +" Cargando..."
+                    +"</div>"
+                    +"</div>"
+                    +"</div>");
                 var proveedor = $("#proveedor").val();
                 if(proveedor !== "--- Elegir proveedor ---"){
                     $.post("listaDeudas.jsp",{proveedor: proveedor}, function(res){
@@ -182,10 +210,19 @@ HttpSession sesion = request.getSession();
                             $("#divFormAbonar").html(res.form);
                             $("#contenidoAbonar").html(res.tablaAbonar);
                             $("#contenidoAbonar").hide();
-                            $('#tablaDeudas').DataTable({paging:false,bInfo: false,bFilter: false});                                                                                                      
+                            $('#tablaDeudas').DataTable({paging:false,bInfo: false,bFilter: false});
+                            $('#tablaAbonos').DataTable({paging:false,bInfo: false,bFilter: false});
+                            $("#mensaje").html("");
+                            bloqueaForm("formTablaAbonar");    
+                            bloqueaForm("formAbonar");
+                            $("#barraProgreso").html("");
                         }
                         else if(res.error !== undefined){
+                            $("#barraProgreso").html("");
+                            $("#divFormAbonar").html("");
+                            $("#contenido").html("");
                             $("#msj").html(res.error);
+                            
                         }
                     },"json");
                     
@@ -213,9 +250,9 @@ HttpSession sesion = request.getSession();
             }
             
             function cantidadAbonar(){
-                var cantidad = $("#cantidad").val();
+                var cantidad = Math.round($("#cantidad").val()*100)/100;
                 var deuda = $("#totalDeuda").html();
-                if(isNaN(cantidad) || cantidad === "" || cantidad < 0){
+                if(isNaN(cantidad) || cantidad === "" || cantidad <= 0){
                     $("#msj").html("<div id='mensaje' class='col-sm-4 col-sm-offset-4 animated slideInRight'> "
                             + "<div class='alert alert-danger' role='alert'>"
                             + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
@@ -234,8 +271,8 @@ HttpSession sesion = request.getSession();
                     var cantidadRestante = cantidad;
                     $("#msj").html("");
                     $("#proveedor").attr('disabled','disabled');
-                    $("#contenido").hide("slow");
-                    $("#divFormAbonar").hide("slow");
+                    $("#contenido").hide("fast");
+                    $("#divFormAbonar").hide("fast");
                     $("#contenidoAbonar").show("fast");
                     $("#abono").html(cantidadRestante);
                 }
@@ -246,39 +283,42 @@ HttpSession sesion = request.getSession();
                 //a = Cantidad a abonar.
                 //d = Deuda
                 //abono = abono general
-                a = parseFloat($("#a"+i).val());
+                a = parseFloat($("#a"+i).val());                
                 a = Math.round(a*100)/100;
-                console.log("a: " +a);
                 d = parseFloat($("#d"+i).html());
                 d = Math.round(d*100)/100;
-                console.log("d: " +d);
                 abono = parseFloat($("#abono").html());                                
                 abono = Math.round(abono*100)/100;
-                console.log("abono: " +abono);
+               
                 if($("#c"+i).is(':checked')) {
-                    //Activo la casilla
-                    abono = Math.round((abono + a)*100)/100;
+                    //Activo la casilla                  
+                    abono = Math.round((abono + a)*100)/100;                    
                     a = 0;
                     if(abono === 0){
-                        alert("No hay abono a agregar");
+                        $("#msj").html("<div id='mensaje' class='col-sm-4 col-sm-offset-4 animated slideInRight'> "
+                            + "<div class='alert alert-danger' role='alert'>"
+                            + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                            + "<span aria-hidden='true'> &times;</span></button>"
+                            + "<strong>Error.</strong> No hay cantidad a abonar."
+                            + "</div></div>");
                         $("#c"+i).attr("checked",false);
-                        a = 0;
+                        a = 0;                      
                     }
                     else{
-                        if(abono<d){
-                            a = abono;
-                            abono = Math.round((abono - a)*100)/100;
+                        if(abono<d){                            
+                            a = abono;                            
+                            abono = Math.round((abono - a)*100)/100;                            
                         }
-                        else{
-                            a = d;
+                        else{                            
+                            a = d;                            
                             abono = Math.round((abono - a)*100)/100;
                             $("#tr"+i).attr("style"," background-color: rgba(122, 211, 107, 0.5)");
                         }
                         if(abono === 0){
-                            $("#btnAbonar").attr("disabled",false);
+                            $("#btnAbonar").removeAttr('disabled');
                         }
                         else{
-                            $("#btnAbonar").attr("disabled",true);
+                            $("#btnAbonar").attr("disabled","disabled");
                         }
                     }
                 }
@@ -288,12 +328,13 @@ HttpSession sesion = request.getSession();
                     a = 0;
                     $("#tr"+i).removeAttr("style");
                     if(abono === 0){
-                        $("#btnAbonar").attr("disabled",false);
+                        $("#btnAbonar").removeAttr("disabled");
                     }
                     else{
-                        $("#btnAbonar").attr("disabled",true);
+                        $("#btnAbonar").attr("disabled","disabled");
                     }
-                }                
+                }   
+                
                 $("#a"+i).val(a);
                 $("#abono").html(abono);
             }
@@ -311,10 +352,10 @@ HttpSession sesion = request.getSession();
                 $("#c"+i).attr("checked",false);
                 $("#a"+i).select();
                 if(abono === 0){
-                    $("#btnAbonar").attr("disabled",false);
+                    $("#btnAbonar").removeAttr("disabled");
                 }
                 else{
-                    $("#btnAbonar").attr("disabled",true);
+                    $("#btnAbonar").attr("disabled","disabled");
                 }
                 return 0;
             }
@@ -328,16 +369,26 @@ HttpSession sesion = request.getSession();
                 abono = parseFloat($("#abono").html());
                 abono = Math.round(abono*100)/100;
                 if(abono === 0){
-                    alert("No hay abono a agregar");
+                    $("#msj").html("<div id='mensaje' class='col-sm-4 col-sm-offset-4 animated slideInRight'> "
+                            + "<div class='alert alert-danger' role='alert'>"
+                            + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                            + "<span aria-hidden='true'> &times;</span></button>"
+                            + "<strong>Error.</strong> No hay cantidad a abonar."
+                            + "</div></div>");
                     a = 0;
                 }
                 else{
-                    if(isNaN(a)){
+                    if(isNaN(a) || a < 0 || a > d){
                         a = 0;
                     }
                     else{
                         if(a > abono){
-                            alert("No se completa la cantidad");
+                            $("#msj").html("<div id='mensaje' class='col-sm-4 col-sm-offset-4 animated slideInRight'> "
+                            + "<div class='alert alert-danger' role='alert'>"
+                            + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                            + "<span aria-hidden='true'> &times;</span></button>"
+                            + "<strong>Error.</strong> No se completa la cantidad."
+                            + "</div></div>");
                             a = 0;
                         }else{
                             abono = abono - a;
@@ -347,15 +398,55 @@ HttpSession sesion = request.getSession();
                         }
                         
                         if(abono === 0){
-                            $("#btnAbonar").attr("disabled",false);
+                            $("#btnAbonar").removeAttr("disabled");
                         }
                         else{
-                            $("#btnAbonar").attr("disabled",true);
+                            $("#btnAbonar").attr("disabled","disabled");
                         }                      
                     }
                     $("#a"+i).val(a);
                     $("#abono").html(Math.round(abono*100)/100);
                 }                
+            }
+            
+            function regresarAContenido(){
+                $("#msj").html("");
+                $("#contenidoAbonar").hide("fast");
+                var inputsCantidad = $("#contenidoAbonar").find("input");
+                var tr = $("#contenidoAbonar").find("tr");
+                for(var i = 0; i<inputsCantidad.length; i++){
+                    if((i%2) === 0){
+                        inputsCantidad.eq(i).val("0");
+                    }
+                    else{
+                        inputsCantidad.eq(i).attr("checked",false);
+                    }
+                    tr.eq(i).removeAttr("style");
+                }
+                $("#contenido").show("slow");
+                $("#divFormAbonar").show("slow");
+                $("#cantidad").val("");
+                $("#proveedor").removeAttr("disabled");
+            }
+            
+            function confirmaAbono(){
+                $("#msjConfirmar").html("Se abonarán $"+$("#cantidad").val()+ " al proveedor "+ $("#proveedor option:selected").html()
+                +"<br><br>¿Desea continuar?");
+                $("#modal-confirmaAbono").modal("toggle");
+            }
+            
+            function realizaAbono(){
+                $.post("abonar.jsp",$("#formTablaAbonar").serialize(),function (res){
+                    regresarAContenido();
+                    consultaDeudas();
+                    $("#contenido").html("");
+                    $("#divFormAbonar").html("");
+                    if(res.error !== undefined){
+                        $("#msj").html(res.error);
+                    }else{
+                         $("#msj").html(res.exito);
+                    }
+                },"json");
             }
             
         </script>
