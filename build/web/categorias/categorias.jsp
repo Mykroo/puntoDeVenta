@@ -31,7 +31,7 @@ HttpSession sesion = request.getSession();
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a href="puntoDeVenta.jsp" class="navbar-brand">Punto de venta</a>
+                        <a href="/puntoDeVenta/puntoDeVenta.jsp" class="navbar-brand">Punto de venta</a>
                     </div>				
                     <!--Inicia Menu-->
                     <div class="collapse navbar-collapse" id="navegacion1">

@@ -65,7 +65,7 @@ HttpSession sesion = request.getSession();
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="caja/fondoDeCaja.jsp"><span class="icon-drawer"></span> Fondo de caja</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="caja/corte.jsp"><span class="icon-scissors"></span> Corte</a></li>
+                                    <li><a href="caja/corteDia.jsp"><span class="icon-scissors"></span> Corte</a></li>
                                     <li class="divider"></li>
                                     <li><a href="caja/movimientos.jsp"><span class="icon-tab"></span> Movimientos de caja</a></li>
                                 </ul>
