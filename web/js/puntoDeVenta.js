@@ -137,7 +137,7 @@ function isDate(txtDate)
     app.directive("navbarPrincipal",function(){
        return{
            restrict:'E',
-           templateUrl:'navbar-principal.html',
+           templateUrl:'/puntoDeVenta/navbar-principal.html',
            controller: function(){
                
            },
