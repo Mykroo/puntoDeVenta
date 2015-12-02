@@ -184,7 +184,7 @@ HttpSession sesion = request.getSession();
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" onclick="$('#msjSalida').hide()" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" onclick="salidaCaja()" id="btnGuardarSalida">Guardar salida</button>
+                        <button type="button" class="btn btn-primary" onclick="$('#btnGuardarSalida').attr('disabled','disabled'); salidaCaja();" id="btnGuardarSalida">Guardar salida</button>
                     </div>
 		</div>
             </div>
@@ -213,7 +213,7 @@ HttpSession sesion = request.getSession();
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" onclick="$('#msEntrada').hide()" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" onclick="entradaCaja()" id="btnGuardarEntrada">Guardar entrada</button>
+                        <button type="button" class="btn btn-primary" onclick="$('#btnGuardarEntrada').attr('disabled','disabled'); entradaCaja();" id="btnGuardarEntrada">Guardar entrada</button>
                     </div>
 		</div>
             </div>
@@ -308,6 +308,7 @@ HttpSession sesion = request.getSession();
                         }
                     },"json");
                 }
+                $("#btnGuardarSalid").removeAttr('disabled');
             }
             function entradaCaja(){
                  if(isNaN($("#cantidadEntrada").val()) || $("#cantidadEntrada").val()===""){
@@ -327,6 +328,7 @@ HttpSession sesion = request.getSession();
                         }
                     },"json");
                 }
+                $("#btnGuardarEntrada").removeAttr('disabled');
             }
             
             bloqueaForm("form-salidaCaja");
