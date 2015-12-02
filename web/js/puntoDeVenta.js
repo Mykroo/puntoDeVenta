@@ -132,7 +132,18 @@ function isDate(txtDate)
     }
     return true;
 }
+// ****************************---------------------empieza lo perronononnn----------------****************************************************************
+    var app=angular.module('puntoDeVenta',[]);    
+    app.directive("navbarPrincipal",function(){
+       return{
+           restrict:'E',
+           templateUrl:'navbar-principal.html',
+           controller: function(){
+               
+           },
+           controllerAs:"menu"           
+       };
+    });
 
-
-
-    
+// ****************************-------------------------ANGULAR JS----------------****************************************************************
+   

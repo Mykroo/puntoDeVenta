@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!--Inicia Menu-->
+<header>
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion1">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/puntoDeVenta/puntoDeVenta.jsp" class="navbar-brand">Punto de venta</a>
+            </div>				            
+            <div class="collapse navbar-collapse" id="navegacion1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/puntoDeVenta/puntoDeVenta.jsp">1</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Productos <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/puntoDeVenta/productos/productos.jsp">Productos</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/puntoDeVenta/categorias/categorias.jsp">Categorías</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/puntoDeVenta/marcas/marcas.jsp">Marcas</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/puntoDeVenta/productos/productosFallados.jsp">Productos fallados</a></li>                                   
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Proveedores <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/puntoDeVenta/proveedores/proveedores.jsp"><span class="icon-users"></span> Proveedores</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/puntoDeVenta/proveedores/abonoProveedor.jsp"><span class="icon-coin-dollar"></span> Pago a proveedores</a></li>                                   
+                        </ul>
+                    </li>                  
+                    <li><a href="/puntoDeVenta/clientes/clientes.jsp">Clientes</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Caja <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/puntoDeVenta/caja/fondoDeCaja.jsp"><span class="icon-drawer"></span> Fondo de caja</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/puntoDeVenta/caja/corte.jsp"><span class="icon-scissors"></span> Corte</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/puntoDeVenta/caja/movimientos.jsp"><span class="icon-tab"></span> Movimientos de caja</a></li>
+                        </ul>
+                    </li>                            
+                    <li ><a href="#">Reportes</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"> Usuario: {{menu.usuario}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">                                    
+                            <li><a href="/puntoDeVenta/closeSession.jsp">Cerrar sesión</a></li>                                  
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
