@@ -10,7 +10,7 @@ HttpSession sesion = request.getSession();
     }
 %>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" ng-app="puntoDeVenta">
     <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -24,65 +24,7 @@ HttpSession sesion = request.getSession();
         </script>
     </head>
     <body>
-	<header>
-            <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion1">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a href="puntoDeVenta.jsp" class="navbar-brand">Punto de venta</a>
-                    </div>				
-                    <!--Inicia Menu-->
-                    <div class="collapse navbar-collapse" id="navegacion1">
-                        <ul class="nav navbar-nav">
-                            <li><a href="puntoDeVenta.jsp">1</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Productos <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="productos/productos.jsp">Productos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="categorias/categorias.jsp">Categorías</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="marcas/marcas.jsp">Marcas</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="productos/productosFallados.jsp">Productos fallados</a></li>                                   
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Proveedores <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="proveedores/proveedores.jsp"><span class="icon-users"></span> Proveedores</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="proveedores/abonoProveedor.jsp"><span class="icon-coin-dollar"></span> Pago a proveedores</a></li>                                   
-                                </ul>
-                            </li>                  
-                            <li><a href="clientes/clientes.jsp">Clientes</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Caja <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="caja/fondoDeCaja.jsp"><span class="icon-drawer"></span> Fondo de caja</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="caja/corteDia.jsp"><span class="icon-scissors"></span> Corte</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="caja/movimientos.jsp"><span class="icon-tab"></span> Movimientos de caja</a></li>
-                                </ul>
-                            </li>                            
-                            <li ><a href="#">Reportes</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"> <%=sesion.getAttribute("nombre")%> <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">                                    
-                                    <li><a href="closeSession.jsp">Cerrar sesión</a></li>                                  
-                                </ul>
-                            </li>
-                           
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-	</header>	
+    <navbar-principal ng-init="menu.usuario='<%=sesion.getAttribute("nombre")%>'"></navbar-principal>
 	<div class="jumbotron">
             <div class="container">
                 <h1>Venta de mostrador</h1>
@@ -184,7 +126,7 @@ HttpSession sesion = request.getSession();
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" onclick="$('#msjSalida').hide()" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" onclick="$('#btnGuardarSalida').attr('disabled','disabled'); salidaCaja();" id="btnGuardarSalida">Guardar salida</button>
+                        <button type="button" class="btn btn-primary" onclick="salidaCaja()" id="btnGuardarSalida">Guardar salida</button>
                     </div>
 		</div>
             </div>
@@ -213,13 +155,14 @@ HttpSession sesion = request.getSession();
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" onclick="$('#msEntrada').hide()" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" onclick="$('#btnGuardarEntrada').attr('disabled','disabled'); entradaCaja();" id="btnGuardarEntrada">Guardar entrada</button>
+                        <button type="button" class="btn btn-primary" onclick="entradaCaja()" id="btnGuardarEntrada">Guardar entrada</button>
                     </div>
 		</div>
             </div>
         </div>                         
                                 
         <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/angular.min.js"></script>
         <script type="text/javascript" src ="js/bootstrap.min.js"></script>
         <script type="text/javascript" src ="js/jquery.validate.min.js"></script>
         <script type="text/javascript" src = "js/puntoDeVenta.js"></script>
@@ -308,7 +251,6 @@ HttpSession sesion = request.getSession();
                         }
                     },"json");
                 }
-                $("#btnGuardarSalid").removeAttr('disabled');
             }
             function entradaCaja(){
                  if(isNaN($("#cantidadEntrada").val()) || $("#cantidadEntrada").val()===""){
@@ -328,7 +270,6 @@ HttpSession sesion = request.getSession();
                         }
                     },"json");
                 }
-                $("#btnGuardarEntrada").removeAttr('disabled');
             }
             
             bloqueaForm("form-salidaCaja");

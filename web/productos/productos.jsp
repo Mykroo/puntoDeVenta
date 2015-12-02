@@ -12,7 +12,7 @@ HttpSession sesion = request.getSession();
 %>
 <jsp:useBean id="objConn" class="mysqlpackage.MySqlConn"/>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" ng-app="puntoDeVenta">
     <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -23,53 +23,7 @@ HttpSession sesion = request.getSession();
         <title>Punto de venta</title>
     </head>
     <body>
-	<header>
-            <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion1">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a href="puntoDeVenta.jsp" class="navbar-brand">Punto de venta</a>
-                    </div>				
-                    <!--Inicia Menu-->
-                    <div class="collapse navbar-collapse" id="navegacion1">
-                        <ul class="nav navbar-nav">
-                            <li><a href="puntoDeVenta.jsp">Venta</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Administrar productos <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="productos/altaProducto.jsp"><span class="glyphicon glyphicon-plus"></span> Agregar producto</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="productos/bajaProducto.jsp"><span class="glyphicon glyphicon-minus"></span> Eliminar producto</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="productos/modificarProducto.jsp"><span class="glyphicon glyphicon-pencil"></span> Modificar producto</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="productos/catalogoProducto.jsp"><span class="icon-list2"></span> Lista de productos</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Administrar proveedores <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="proveedores/altaProveedor.jsp"><span class="icon-user-plus"></span> Agregar proveedor</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="proveedores/bajaProveedor.jsp"><span class="icon-user-minus"></span> Eliminar proveedor</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="proveedores/modificarProveedor.jsp"><span class="icon-user"></span> Modificar proveedor</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="proveedores/catalogoProveedor.jsp"><span class="icon-list2"></span> Lista de proveedores</a></li>                            
-                                </ul>
-                            </li>
-                            <li ><a href="#">Reportes</a></li>
-                            <li><a href="closeSession.jsp">Cerrar sesión</a></li>
-                            <li><a>Usuario: <%=sesion.getAttribute("nombre")%></a></li>                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-	</header>	
+	<navbar-principal ng-init="menu.usuario='<%=sesion.getAttribute("nombre")%>'"></navbar-principal>
 	<div class="jumbotron">
             <div class="container">
                 <h1>Productos</h1>
@@ -309,6 +263,7 @@ HttpSession sesion = request.getSession();
         </div>
         
         <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type="text/javascript" src="../js/angular.min.js"></script>
         <script type="text/javascript" src ="../js/bootstrap.min.js"></script>
         <script type="text/javascript" src ="../js/jquery.validate.min.js"></script>
         <script type="text/javascript" src = "../js/puntoDeVenta.js"></script>
