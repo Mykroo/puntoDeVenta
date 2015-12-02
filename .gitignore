@@ -1,5 +1,6 @@
-nbproject/private/private.properties
+nbproject/private/
 nbproject/project.properties
 build/
 src/
 dist/
+build/web/WEB-INF/sun-web.xml
