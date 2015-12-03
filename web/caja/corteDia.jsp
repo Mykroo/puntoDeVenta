@@ -34,19 +34,19 @@ HttpSession sesion = request.getSession();
             </div>
 	</div>
                         
-        <div class="container">              
+       <div class="container">              
             <div id="contenido">
                 <div class="row">
                     <div class="col-md-6">
                         <hr>
                         <h4>
-                            <span class="icon-coin-dollar"> Ventas totales: </span><span id="totalVentas"> $5000</span>
+                            <span class="icon-coin-dollar"> Ventas totales: </span><span id="totalVentas"></span>
                         </h4>
                     </div>
                     <div class="col-md-6">
                         <hr>
                         <h4>
-                            <span class="icon-stats-bars"> Ganancias: </span><span id="totalVentas"> $1000</span>                           
+                            <span class="icon-stats-bars"> Ganancias: </span><span id="ganancia"> </span>                            
                         </h4>                            
                     </div>
                 </div>
@@ -56,20 +56,20 @@ HttpSession sesion = request.getSession();
                         <hr>
                         <h4><span class="icon-drawer"> Dinero en Caja</span></h4>
                         <ul>
-                            <li>Fondo de caja: <span id="fondoDeCaja"> $2300</span></li>
-                            <li>Ventas en efectivo: <span id="ventasEfectivo" style="color:green"> + $12200</span></li>
-                            <li>Entradas: <span id="entradas" style="color:green"> + $200</span></li>
-                            <li>Salidas: <span id="salidas" style="color:red"> - $100</span></li>
-                            <li>Total: <span id="total"> <strong> $14600</strong></span></li>                            
+                            <li>Fondo de caja: <span id="fondoDeCaja"></span></li>
+                            <li>Ventas en efectivo: <span id="ventasEfectivo" style="color:green"></span></li>
+                            <li>Entradas: <span id="entradas" style="color:green"></span></li>
+                            <li>Salidas: <span id="salidas" style="color:red"></span></li>
+                            <li>Total: <span id="totalCaja"> </span></li>                            
                         </ul>
                     </div>
                     <div class="col-md-6">
                         <hr>
                         <h4><span class="glyphicon glyphicon-usd"></span> Ventas</h4>
                         <ul>
-                            <li>En efectivo: <span id="efectivo" style="color:green"> + $12200</span></li>
-                            <li>Con tarjeta de crédito: <span id="tarjeta" style="color:green"> + $900</span></li>
-                            <li>Total: <span id="total"><strong> $13100 </strong></span></li>
+                            <li>En efectivo: <span id="efectivo" style="color:green"></span></li>
+                            <li>Con tarjeta de crédito: <span id="tarjeta" style="color:green"></span></li>
+                            <li>Total: <span id="total"></span></li>
                         </ul>
                     </div>
                 </div>
@@ -79,16 +79,14 @@ HttpSession sesion = request.getSession();
                         <hr>
                         <h4><span class="icon-upload2"></span> Salidas de caja</h4>
                         <ul id="listaSalidas">
-                            <li>Comida: $100</li>
-                            <li>Clavado: $200</li>
+                            
                         </ul>
                     </div>
                     <div class="col-md-6">
                         <hr>
                         <h4><span class="icon-download2"></span> Entradas de caja</h4>
                         <ul id="listaEntradas">
-                            <li>Comida: $100</li>
-                            <li>Clavado: $200</li>
+
                         </ul>
                     </div>
                 </div>
@@ -97,13 +95,19 @@ HttpSession sesion = request.getSession();
                     <div class="col-md-6">
                         <hr>
                         <h4>
-                            <span class="icon-stats-bars"> Productos vendidos: </span><span id="productosVendidos"> 87</span>
+                            <span class="icon-arrow-down2"> Descuentos: </span><span id="descuento"></span>
+                        </h4>
+                    </div>
+                    <div class="col-md-6">
+                        <hr>
+                        <h4>
+                            <span class="icon-stats-bars"> Productos vendidos: </span><span id="productosVendidos"></span>
                         </h4>
                     </div>
                 </div>                
             </div>
             <br>                 
-        </div>                        
+        </div>                                     
        
         
         <script type="text/javascript" src="../js/jquery.js"></script>
@@ -115,11 +119,30 @@ HttpSession sesion = request.getSession();
         <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
         <script type="text/javascript">           
             
-            function cargaCorte(){
+            function cargaCorte(){;
                 $.post("consultaCorteDia.jsp",function(res){
-                    
-                });
+                    if(res.exito !== undefined){
+                        $("#totalVentas").html(" $"+res.totalVentas);
+                        $("#total").html(" $"+res.totalVentas);
+                        $("#descuento").html(" $"+res.descuento);
+                        $("#efectivo").html(" + $"+res.efectivo);
+                        $("#tarjeta").html(" + $"+res.tarjeta);
+                        $("#ventasEfectivo").html(" + $"+res.efectivo);
+                        $("#entradas").html(" + $"+res.totalEntrada);
+                        $("#salidas").html(" - $"+res.totalSalida);
+                        $("#fondoDeCaja").html(" $" + res.fondoCaja);
+                        var totalCaja = Math.round((res.fondoCaja + res.efectivo + res.totalEntrada - res.totalSalida)*100)/100;
+                        $("#totalCaja").html(" $"+totalCaja);
+                        $("#listaEntradas").html(res.listaEntrada);
+                        $("#listaSalidas").html(res.listaSalida);
+                        $("#productosVendidos").html(res.productosVendidos);
+                        var gananciaTotal = Math.round((res.ganancia - res.descuento)*100)/100;
+                        $("#ganancia").html(" $"+gananciaTotal);
+                    }
+                },"json");
             }
+            
+            cargaCorte();
         </script>
     </body>
 </html>
