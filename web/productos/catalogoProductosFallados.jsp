@@ -43,7 +43,7 @@
                                 for(int j=2; j<9; j++){                                        
                                     salida += "<td>"+objConn.rs.getString(j)+"</td>";
                                 }
-                                 salida  += "<td><span class='icon-cross' onclick='idProductoEliminar = \""+objConn.rs.getString(9)+"\";' data-toggle=\"modal\" href=\'#modal-eliminar\'></span></td>";
+                                 salida  += "<td><span class='icon-cross pointer' onclick='idProductoEliminar = \""+objConn.rs.getString(9)+"\";' data-toggle=\"modal\" href=\'#modal-eliminar\'></span></td>";
                                 salida+="</tr>";                                   
                                 objConn.rs.next(); 
                             }                           

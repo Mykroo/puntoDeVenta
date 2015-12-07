@@ -35,7 +35,7 @@ if(n>0){
             + "<td>"+cantidad+"</td>"
             + "<td> $"+Math.rint((impor/cant)*100)/100+"</td>" 
             + "<td> $"+importe+"</td>"
-            + "<td ><span class='glyphicon glyphicon-remove pointer' onclick='$(\"#f"+numFilas.toString()+"\").remove(); renombraFilas();'></span></td>"
+            + "<td ><span class='icon-cross pointer' onclick='$(\"#f"+numFilas.toString()+"\").remove(); renombraFilas();'></span></td>"
             + "<input type='hidden' name=\"cantidad"+numFilas+"\" value=\""+cantidad+"\">"
             + "<input type='hidden' name=\"codigo"+numFilas+"\" value=\""+codigo+"\">"
             + "<input type='hidden' name=\"producto"+numFilas+"\" value=\""+objConn.rs.getString(3) +"\">"

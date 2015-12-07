@@ -38,8 +38,8 @@
                                 for(int j=1; j<3; j++){                                        
                                     salida += "<td>"+objConn.rs.getString(j)+"</td>";
                                 }
-                                salida += "<td><span class='glyphicon glyphicon-pencil' onclick='idCategoriaModificar = \""+objConn.rs.getString(1)+"\";' data-toggle=\"modal\" href=\'#modal-modificar\'></span></td>"
-                                        + "<td><span class='icon-cross' onclick='idCategoriaEliminar = \""+objConn.rs.getString(1)+"\";' data-toggle=\"modal\" href=\'#modal-eliminar\'></span></td>";
+                                salida += "<td><span class='icon-pencil pointer' onclick='idCategoriaModificar = \""+objConn.rs.getString(1)+"\";' data-toggle=\"modal\" href=\'#modal-modificar\'></span></td>"
+                                        + "<td><span class='icon-cross pointer' onclick='idCategoriaEliminar = \""+objConn.rs.getString(1)+"\";' data-toggle=\"modal\" href=\'#modal-eliminar\'></span></td>";
                                 salida+="</tr>";                                   
                                 objConn.rs.next(); 
                             }                           

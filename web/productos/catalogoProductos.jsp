@@ -43,8 +43,8 @@
                                 for(int j=2; j<9; j++){                                        
                                     salida += "<td>"+objConn.rs.getString(j)+"</td>";
                                 }
-                                salida += "<td><span class='glyphicon glyphicon-pencil' onclick='llenaFormulario(\""+objConn.rs.getString(1)+"\",\""+objConn.rs.getString(2)+"\",\""+objConn.rs.getString(3)+"\",\""+objConn.rs.getString(4)+"\",\""+objConn.rs.getString(5)+"\",\""+objConn.rs.getString(6)+"\",\""+objConn.rs.getString(8)+"\")' data-toggle=\"modal\" href=\'#modal-modificar\'></span></td>"
-                                        + "<td><span class='icon-cross' onclick='idProductoEliminar = \""+objConn.rs.getString(1)+"\";' data-toggle=\"modal\" href=\'#modal-eliminar\'></span></td>";
+                                salida += "<td><span class='icon-pencil pointer' onclick='llenaFormulario(\""+objConn.rs.getString(1)+"\",\""+objConn.rs.getString(2)+"\",\""+objConn.rs.getString(3)+"\",\""+objConn.rs.getString(4)+"\",\""+objConn.rs.getString(5)+"\",\""+objConn.rs.getString(6)+"\",\""+objConn.rs.getString(8)+"\")' data-toggle=\"modal\" href=\'#modal-modificar\'></span></td>"
+                                        + "<td><span class='icon-cross pointer' onclick='idProductoEliminar = \""+objConn.rs.getString(1)+"\";' data-toggle=\"modal\" href=\'#modal-eliminar\'></span></td>";
                                 salida+="</tr>";                                   
                                 objConn.rs.next(); 
                             }                           

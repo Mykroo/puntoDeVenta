@@ -35,7 +35,7 @@ if(n>0){
             + "<td>"+cantidad+"</td>"
             + "<td> $"+objConn.rs.getString(6)+"</td>" 
             + "<td> $"+Math.rint(cant*objConn.rs.getFloat(6)*100)/100+"</td>"
-            + "<td ><span class='glyphicon glyphicon-remove pointer' onclick='$(\"#f"+numFilas.toString()+"\").remove(); renombraFilas();'></span></td>"
+            + "<td ><span class='icon-cross pointer' onclick='$(\"#f"+numFilas.toString()+"\").remove(); renombraFilas();'></span></td>"
             + "<input type='hidden' name=\"cantidad"+numFilas+"\" value=\""+cantidad+"\">"
             + "<input type='hidden' name=\"total"+numFilas+"\" value=\""+Math.rint(cant*objConn.rs.getFloat(6)*100)/100+"\">"
             + "<input type='hidden' name=\"codigo"+numFilas+"\" value=\""+codigo+"\">"

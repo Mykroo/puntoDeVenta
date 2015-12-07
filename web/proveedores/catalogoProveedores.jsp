@@ -48,7 +48,7 @@
                             + "<td>"+objConn.rs.getString(12)+"</td>"
                             + "<td>"+objConn.rs.getString(13)+"</td>";
                     
-                    salida += "<td><span class='pointer glyphicon glyphicon-pencil' data-toggle=\"modal\" href=\'#modal-modificar\' onclick='llenaFormulario(\""+objConn.rs.getString(1)+"\",\""+objConn.rs.getString(2)+"\",\""+objConn.rs.getString(3)+"\",\""+objConn.rs.getString(4)+"\",\""+objConn.rs.getString(5)+"\",\""+objConn.rs.getString(6)+"\",\""+objConn.rs.getString(7)+"\",\""+objConn.rs.getString(8)+"\",\""+objConn.rs.getString(9)+"\",\""+objConn.rs.getString(10)+"\",\""+objConn.rs.getString(11)+"\",\""+objConn.rs.getString(12)+"\",\""+objConn.rs.getString(13)+"\")' ></span></td>"
+                    salida += "<td><span class='pointer icon-pencil' data-toggle=\"modal\" href=\'#modal-modificar\' onclick='llenaFormulario(\""+objConn.rs.getString(1)+"\",\""+objConn.rs.getString(2)+"\",\""+objConn.rs.getString(3)+"\",\""+objConn.rs.getString(4)+"\",\""+objConn.rs.getString(5)+"\",\""+objConn.rs.getString(6)+"\",\""+objConn.rs.getString(7)+"\",\""+objConn.rs.getString(8)+"\",\""+objConn.rs.getString(9)+"\",\""+objConn.rs.getString(10)+"\",\""+objConn.rs.getString(11)+"\",\""+objConn.rs.getString(12)+"\",\""+objConn.rs.getString(13)+"\")' ></span></td>"
                            + "<td><span class='pointer icon-cross' onclick='idProveedorEliminar = \""+objConn.rs.getString(1)+"\";' data-toggle=\"modal\" href=\'#modal-eliminar\'></span></td></tr>" ;                                   
                     objConn.rs.next(); 
                 }

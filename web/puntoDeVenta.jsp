@@ -3,22 +3,32 @@
     Created on : 23/05/2015, 06:14:24 PM
     Author     : Ricardo
 --%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.util.Properties"%>
+<%@page import="java.net.URL"%>
+<jsp:useBean id="conf" class="configpackage.Config"/>
 <%
-HttpSession sesion = request.getSession();
+    HttpSession sesion = request.getSession();
     if(sesion.getAttribute("nombre")==null){
-        response.sendRedirect("index.jsp"); 
+        response.sendRedirect("/puntoDeVenta/index.jsp");
     }
+    else{
+        conf.setRuta(request);
+        conf.carga();        
+        String nombreEmpresa = conf.getNombreEmpresa();
+        String tema = conf.getTema();
 %>
 <!DOCTYPE html>
 <html lang="es" ng-app="puntoDeVenta">
     <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/puntoDeVenta.css">
-	<link rel="stylesheet" href="css/icons.css">
-        <link rel="stylesheet" href="css/animate.css">
-        <title>Punto de venta</title>
+	<link rel="stylesheet" href="/puntoDeVenta/css/<%=tema%>">
+	<link rel="stylesheet" href="/puntoDeVenta/css/puntoDeVenta.css">
+	<link rel="stylesheet" href="/puntoDeVenta/css/icons.css">
+        <link rel="stylesheet" href="/puntoDeVenta/css/animate.css">
+        <link rel="stylesheet" href="/puntoDeVentacss/jquery-ui.min.css">
+        <title><%=nombreEmpresa %></title>
         <script type="text/javascript">
             var numFilas = 0;
         </script>
@@ -48,7 +58,7 @@ HttpSession sesion = request.getSession();
                                    onkeypress="if(enter(event.keyCode)){$('#formulario').submit();}">
                         </div>
                         <div class="form-group">
-                             <button type="button" title="Agregar a la venta" onclick="$('#formulario').submit()" id = "agregaProductoBtn" class="btn btn-default" tabindex="3" ><span class="glyphicon glyphicon-ok"></span></button>                             
+                             <button type="button" title="Agregar a la venta" onclick="$('#formulario').submit()" id = "agregaProductoBtn" class="btn btn-default" tabindex="3" ><span class="icon-checkmark"></span></button>                             
                         </div>
                         <div class="form-group" id="msj">
                             
@@ -87,7 +97,7 @@ HttpSession sesion = request.getSession();
                 <div class="col-xs-12 col-sm-12 col-md-10">
                     <button class="btn btn-info" id = "terminaVentaBtn" disabled="disabled" onclick="$('#formularioTabla').submit()">
                         Realizar compra 
-                        <span class="glyphicon glyphicon-check"></span>
+                        <span class="icon-checkmark2"></span>
                     </button>
                 </div>
                 
@@ -214,7 +224,7 @@ HttpSession sesion = request.getSession();
         <script type="text/javascript">
             function renombraFilas(){
                 var filas = $("#filas").find("tr");
-                var btnEliminar = $(".glyphicon-remove");
+                var btnEliminar = $(".icon-cross");
                 for(var i=1;i<filas.length;i++){
                     var input = filas.eq(i).find("input");
                     input.eq(0).attr("name","cantidad"+(i-1));                    
@@ -277,3 +287,6 @@ HttpSession sesion = request.getSession();
         </script>
     </body>
 </html>
+<%
+    }
+%>

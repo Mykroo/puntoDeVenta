@@ -3,32 +3,34 @@
     Created on : 1/06/2015, 06:56:58 PM
     Author     : Ricardo
 --%>
-<%
-HttpSession sesion = request.getSession();
-    if(sesion.getAttribute("nombre")==null){
-        response.sendRedirect("index.jsp"); 
-    }
-    
-    if(request.getParameter("numFilas")==null || request.getParameter("cantidad0")==null){
-         %>
-        <jsp:forward page="puntoDeVenta.jsp"></jsp:forward>
-        <%
-    }
-%>
 <%@page import="java.util.ArrayList"%>
-<jsp:useBean id="objConn" class="mysqlpackage.MySqlConn"></jsp:useBean>
+<%
+    HttpSession sesion = request.getSession();
+    if(sesion.getAttribute("nombre")==null || request.getParameter("numFilas")==null || request.getParameter("cantidad0")==null){
+        response.sendRedirect("/puntoDeVenta/index.jsp");
+    }
+    else{
+        %>
+        <jsp:useBean id="objConn" class="mysqlpackage.MySqlConn"/>
+        <jsp:useBean id="conf" class="configpackage.Config"/>
+        <%
+        conf.setRuta(request);
+        conf.carga();
+        String nombreEmpresa = conf.getNombreEmpresa();
+        String tema = conf.getTema();
 
+%>
 <!DOCTYPE html>
 <html lang="es" ng-app="puntoDeVenta">
     <head>
-        <meta charset="UTF-8">
-        <title>Punto de venta</title>
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/puntoDeVenta.css">
-        <link rel="stylesheet" href="css/animate.css">
-        <link rel="stylesheet" href="css/icons.css">     
-        <link rel="stylesheet" href="css/jquery-ui.min.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="/puntoDeVenta/css/<%=tema%>">
+	<link rel="stylesheet" href="/puntoDeVenta/css/puntoDeVenta.css">
+	<link rel="stylesheet" href="/puntoDeVenta/css/icons.css">
+        <link rel="stylesheet" href="/puntoDeVenta/css/animate.css">
+        <link rel="stylesheet" href="/puntoDeVentacss/jquery-ui.min.css">
+        <title><%=nombreEmpresa %></title>
     </head>
     <body>
         <navbar-principal ng-init="menu.usuario='<%=sesion.getAttribute("nombre")%>'"></navbar-principal>
@@ -221,7 +223,7 @@ HttpSession sesion = request.getSession();
         <div class="container">
             <div class="container">
                 <button class="btn btn-info" id="btnTarjeta" disabled data-toggle="modal" href='#modal-tarjeta' onclick="pagoTarjeta();" type="button"><span class="icon-credit-card"></span></button>
-                <button class="btn btn-success" title="Terminar venta" onclick="cobrar()" id="btnTermina" disabled  tabindex="5" ><span class="glyphicon glyphicon-usd"></span> Cobrar</button>
+                <button class="btn btn-success" title="Terminar venta" onclick="cobrar()" id="btnTermina" disabled  tabindex="5" ><span class="icon-coin-dollar"></span> Cobrar</button>
             </div>
         </div>
         
@@ -312,7 +314,7 @@ HttpSession sesion = request.getSession();
                     if(res.exito !== undefined){
                         $("#modal-exito").modal("show");
                         foco("btnFin");
-                        var delay=4000;   
+                        var delay=1500;   
                         setTimeout(function(){                    
                             window.location.href='puntoDeVenta.jsp';
                         }, delay); 
@@ -335,6 +337,7 @@ HttpSession sesion = request.getSession();
         </script>
     </body>
 </html>
-
-
-    
+<%
+    }
+%>
+ 

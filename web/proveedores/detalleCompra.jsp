@@ -23,7 +23,7 @@
     }
     if (n > 0) {
         String tabla = "<div class='table-responsive datagrid '>"
-                + "<table id='tablaMovimientosCaja' class='table table-striped table-bordered'>"
+                + "<table id='tablaDetalles' class='table table-striped table-bordered'>"
                 + "<thead>"
                 + "<tr class='success' >"
                 + "<th>Código</th>"

@@ -5,21 +5,32 @@
 --%>
 
 <%
-HttpSession sesion = request.getSession();
+    HttpSession sesion = request.getSession();
     if(sesion.getAttribute("nombre")==null){
-        response.sendRedirect("index.jsp"); 
+        response.sendRedirect("/puntoDeVenta/index.jsp"); 
     }
+    else{
+            
+       %>
+        <jsp:useBean id="conf" class="configpackage.Config"/>
+        <%
+        conf.setRuta(request);
+        conf.carga();
+        String nombreEmpresa = conf.getNombreEmpresa();
+        String tema = conf.getTema();
+
 %>
 <!DOCTYPE html>
 <html lang="es" ng-app="puntoDeVenta">
     <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="/puntoDeVenta/css/<%=tema%>">
 	<link rel="stylesheet" href="../css/puntoDeVenta.css">
 	<link rel="stylesheet" href="../css/icons.css">
         <link rel="stylesheet" href="../css/animate.css">
-        <title>Punto de venta</title>
+        <link rel="stylesheet" href="../css/jquery-ui.min.css">
+        <title><%=nombreEmpresa %></title>
     </head>
     <body>
 	<navbar-principal ng-init="menu.usuario='<%=sesion.getAttribute("nombre")%>'"></navbar-principal>
@@ -30,7 +41,7 @@ HttpSession sesion = request.getSession();
 	</div>
         <div class="container">
             <div id="wrap" ></div>
-            <div><button class="btn btn-success glyphicon glyphicon-plus-sign" data-toggle="modal" href="#modal-agregar"></button></div>
+            <div><button class="btn btn-success icon-plus" data-toggle="modal" href="#modal-agregar"></button></div>
             <div id='mensaje'></div>
         </div>
         <div class="container">
@@ -182,3 +193,6 @@ HttpSession sesion = request.getSession();
         </script>            
     </body>
 </html>
+<%
+    }
+%>

@@ -3,21 +3,35 @@
     Created on : 13/11/2015, 09:51:28 AM
     Author     : ricesqgue
 --%>
-<!DOCTYPE html>
 
-<jsp:useBean id="objConn" class="mysqlpackage.MySqlConn"/>
+<%
+    HttpSession sesion = request.getSession();
+    if(sesion.getAttribute("nombre")==null){
+        response.sendRedirect("/puntoDeVenta/index.jsp");
+    }
+    else{
+        %>
+        <jsp:useBean id="objConn" class="mysqlpackage.MySqlConn"/>
+        <jsp:useBean id="conf" class="configpackage.Config"/>
+        <%
+        conf.setRuta(request);
+        conf.carga(); 
+        String nombreEmpresa = conf.getNombreEmpresa();
+        String tema = conf.getTema();
+
+%>
+<!DOCTYPE html>
 <html lang="es" ng-app="puntoDeVenta">
     <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="/puntoDeVenta/css/<%=tema%>">
 	<link rel="stylesheet" href="../css/puntoDeVenta.css">
 	<link rel="stylesheet" href="../css/icons.css">
         <link rel="stylesheet" href="../css/animate.css">
-        <title>Punto de venta</title>
-        <script type="text/javascript">
-            var numFilas = 0;
-        </script>
+        <link rel="stylesheet" href="../css/jquery-ui.min.css">
+        <title><%=nombreEmpresa %></title>
+        <script>var numFilas = 0;</script>
     </head>
     <body>
 	<navbar-principal ng-init="menu.usuario='<%=sesion.getAttribute("nombre")%>'"></navbar-principal>
@@ -57,7 +71,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <button disabled="disabled" type="button" title="Comenzar compra" onclick="comienzaCompra()" id="comienzaCompraBtn" class="btn btn-default" ><span class="glyphicon glyphicon-ok"></span></button>
+                        <button disabled="disabled" type="button" title="Comenzar compra" onclick="comienzaCompra()" id="comienzaCompraBtn" class="btn btn-default" ><span class="icon-checkmark"></span></button>
                     </div>
                 </div>
                         
@@ -86,7 +100,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <button disabled="disabled" type="button" title="Agregar a la compra" onclick="$('#formulario').submit();" id="agregaProductoBtn" class="btn btn-default" tabindex="4" ><span class="glyphicon glyphicon-ok"></span></button>                             
+                            <button disabled="disabled" type="button" title="Agregar a la compra" onclick="$('#formulario').submit();" id="agregaProductoBtn" class="btn btn-default" tabindex="4" ><span class="icon-checkmark"></span></button>                             
                         </div>
                         <div class="form-group" id="msj">
                             
@@ -123,7 +137,7 @@
             </div>
             <button class="btn btn-success" id = "terminaCompraBtn" disabled="disabled" data-toggle="modal" href='#modal-terminaCompra' onclick="terminaCompra();">
                 Realizar compra 
-                <span class="glyphicon glyphicon-check"></span>
+                <span class="icon-checkmark2"></span>
             </button> 
         </div>
                         
@@ -240,7 +254,7 @@
         <script type="text/javascript">
             function renombraFilas(){
                 var filas = $("#filas").find("tr");
-                var btnEliminar = $(".glyphicon-remove");
+                var btnEliminar = $(".icon-cross");
                 for(var i=1;i<filas.length;i++){
                     var input = filas.eq(i).find("input");
                     input.eq(0).attr("name","cantidad"+(i-1));
@@ -325,3 +339,7 @@
         
     </body>
 </html>
+
+<%
+    }
+%>

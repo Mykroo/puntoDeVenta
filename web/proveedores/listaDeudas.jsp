@@ -110,7 +110,7 @@ if(n>0){
                     +" <input type='text' placeholder='Cantidad' name='cantidad' id='cantidad' class='form-control'>"
                     +"</div> "                        
                     +" <div class='form-group'>"
-                    +"      <button id='btnCantidad' type='button' onclick='cantidadAbonar()' class='btn btn-success'> <span class='glyphicon glyphicon-hand-right'> </span> <span class='glyphicon glyphicon-usd'> </span></button>"
+                    +"      <button id='btnCantidad' type='button' onclick='cantidadAbonar()' class='btn btn-success'> <span class='icon-arrow-right2'> </span> <span class='icon-coin-dollar'> </span></button>"
                     +"</div>"                                             
                     +"</form>"           
                     +"</div>");

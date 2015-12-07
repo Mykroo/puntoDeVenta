@@ -4,22 +4,34 @@
     Author     : Ricardo
 --%>
 
-<%
-   HttpSession sesion = request.getSession();
+<%@page import="java.io.InputStream"%>
+<%@page import="java.util.Properties"%>
+<%@page import="java.net.URL"%>
+<jsp:useBean id="conf" class="configpackage.Config"/>
+<%   
+    HttpSession sesion = request.getSession();
     if(sesion.getAttribute("nombre")!=null){
         response.sendRedirect("puntoDeVenta.jsp"); 
     }
-%>
+    conf.setRuta(request);
+    conf.carga(); 
+    String nombreEmpresa = conf.getNombreEmpresa();
+    String tema = conf.getTema();
+    
 
+%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
         <title>Punto de venta</title>
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/puntoDeVenta.css">
-        <link rel="stylesheet" href="css/animate.css">      
+	<link rel="stylesheet" href="/puntoDeVenta/css/<%=tema%>">
+	<link rel="stylesheet" href="/puntoDeVenta/css/puntoDeVenta.css">
+	<link rel="stylesheet" href="/puntoDeVenta/css/icons.css">
+        <link rel="stylesheet" href="/puntoDeVenta/css/animate.css">
+        <link rel="stylesheet" href="/puntoDeVentacss/jquery-ui.min.css">
+        <title><%=nombreEmpresa %></title>   
     </head>
     <body>
         <header>
@@ -41,9 +53,17 @@
                             <h3>Inicio de sesión</h3>                           
                         </div>
                         <label for="usuario">Usuario</label>
-                        <input class="form-control" type="text" name="usuario" id="usuario"><br>
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="usuario" id="usuario">
+                            <span class="input-group-addon icon-user"></span>
+                        </div>
+                        <br>
                         <label for="password">Contraseña</label>
-                        <input class ="form-control" type="password" id="password" name="password"><br>
+                        <div class="input-group">
+                            <input class ="form-control" type="password" id="password" name="password">
+                            <span class="input-group-addon icon-key"></span>
+                        </div>
+                        <br>
                         <button class="btn btn-success" type="button" onclick="enviaFormulario()" id="boton">Entrar</button>
                     </div>
                 </form>
