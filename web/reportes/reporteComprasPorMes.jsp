@@ -1,6 +1,6 @@
 <%-- 
-    Document   : reporteVentasPorMes
-    Created on : 3/12/2015, 10:44:43 AM
+    Document   : reporteComprasPorMes
+    Created on : 6/12/2015, 10:55:10 PM
     Author     : ricesqgue
 --%>
 
@@ -11,7 +11,7 @@
 JSONObject json = new JSONObject();
 String [] meses = {"","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
 
-String query = "select month(fecha) as mes, concat('$',round(sum(pagoEfectivo),2)) as efectivo,concat('$',round(sum(pagoTarjeta),2)) as terjeta , concat('$',round(sum(total-descuento),2)) as total, round(sum(total-descuento),2) as totalNum from ventatotal where year(fecha) = year(now()) group by mes;";
+String query = "select month(fecha) as mes, concat('$',round(sum(total),2)) as total, round(sum(total),2) as totalNum from compratotal where year(fecha) = year(now()) group by mes;";
 
 objConn.Consult(query);
 int n = 0;
@@ -31,9 +31,7 @@ if(n>0){
                 +"<table id='tablaReporte' class='table table-striped table-bordered table-hover'>"
                         +"<thead>"
                            +"<tr class='info' >"
-                                +"<th>Mes</th>"  
-                                +"<th>Efectivo</th>"
-                                +"<th>Tarjeta crédito</th>"
+                                +"<th>Mes</th>"                                 
                                 +"<th>Total</th>"                               
                             +"</tr>"                       
                         +"</thead>"
@@ -41,11 +39,9 @@ if(n>0){
                             for(int i=0;i< n;i++){                                
                                 tabla += "<tr>";
                                 tabla += "<td>"+meses[objConn.rs.getInt(1)]+"</td>";
-                                labels.add(meses[objConn.rs.getInt(1)]); 
-                                    for(int j=2; j<5; j++){                                         
-                                        tabla += "<td>"+objConn.rs.getString(j)+"</td>";
-                                    } 
-                                    data.add(objConn.rs.getFloat(5));
+                                labels.add(meses[objConn.rs.getInt(1)]);
+                                tabla += "<td>"+objConn.rs.getString(2)+"</td>";  
+                                data.add(objConn.rs.getFloat(3)); 
                                 objConn.rs.next(); 
                             }   
                         tabla+="</tbody>"
@@ -53,11 +49,7 @@ if(n>0){
                 +"</div>";    
     json.put("tabla", tabla);
     json.put("labels", labels); 
-    json.put("data",data); 
-
-
- 
-    
+    json.put("data",data);      
 }else{
     json.put("error", "<br><div class='row animated slideInLeft'> <div class='col-md-4 col-md-offset-3'>"
         + "<div class='alert alert-warning' role='alert'>"

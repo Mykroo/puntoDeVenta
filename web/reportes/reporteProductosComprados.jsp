@@ -1,10 +1,8 @@
 <%-- 
-    Document   : reporteProductosVendidos
-    Created on : 4/12/2015, 07:31:57 PM
+    Document   : reporteProductosComprados
+    Created on : 6/12/2015, 10:51:37 PM
     Author     : ricesqgue
 --%>
-
-
 <%@page import="org.json.simple.JSONArray"%>
 <jsp:useBean id="objConn" class="mysqlpackage.MySqlConn"/>
 <%@page import="org.json.simple.JSONObject"%>
@@ -12,7 +10,7 @@
 String fechaInicial = request.getParameter("fechaInicial");
 String fechaFinal = request.getParameter("fechaFinal");
 JSONObject json = new JSONObject();
-String query = " select p.codigo,p.descripcion, m.marca,c.categoria, concat_ws(' ',pr.nombre,pr.apellidoPaterno,pr.apellidoMaterno) as proveedor, sum(vp.cantidad) as cantidad from ventaproducto vp natural join producto p natural join marcas m natural join categorias c natural join ventatotal vt natural join proveedor pr where date(vt.fecha) between '"+fechaInicial+"' and '"+fechaFinal+"' and p.activo=1 group by p.idProducto;";
+String query = " select p.codigo,p.descripcion, m.marca,c.categoria, concat_ws(' ',pr.nombre,pr.apellidoPaterno,pr.apellidoMaterno) as proveedor, sum(vp.cantidad) as cantidad from compraproducto vp natural join producto p natural join marcas m natural join categorias c natural join compratotal vt natural join proveedor pr where date(vt.fecha) between '"+fechaInicial+"' and '"+fechaFinal+"' and p.activo=1 group by p.idProducto;";
 objConn.Consult(query);
 int n = 0;
 if(objConn.rs != null){
@@ -50,7 +48,7 @@ if(n>0){
                 +"</div>";    
     json.put("tabla", tabla);
     
-    query = "select p.descripcion as producto, sum(cp.cantidad) as cantidad from ventaproducto cp natural join producto p natural join ventatotal ct where date(ct.fecha) between '"+fechaInicial+"' and '"+fechaFinal+"' group by producto limit 10;";
+    query = "select p.descripcion as producto, sum(cp.cantidad) as cantidad from compraproducto cp natural join producto p natural join compratotal ct where date(ct.fecha) between '"+fechaInicial+"' and '"+fechaFinal+"' group by producto limit 10;";
     objConn.Consult(query);
     n = 0;
     try{
@@ -71,6 +69,7 @@ if(n>0){
         json.put("labels", labels);
         json.put("data", data);
     }
+    
    
 }else{
     json.put("error", "<br><div class='row animated slideInLeft'> <div class='col-md-4 col-md-offset-3'>"

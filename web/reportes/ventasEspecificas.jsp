@@ -1,18 +1,14 @@
 <%-- 
-    Document   : productosVendidos
-    Created on : 4/12/2015, 05:34:47 PM
+    Document   : ventasEspecificas
+    Created on : 4/12/2015, 09:06:06 PM
     Author     : ricesqgue
 --%>
-
-<%@page import="java.io.InputStream"%>
-<%@page import="java.util.Properties"%>
-<%@page import="java.net.URL"%>
 <%
 HttpSession sesion = request.getSession();
     if(sesion.getAttribute("nombre")==null){
         response.sendRedirect("/puntoDeVenta/index.jsp"); 
     }   
-    else{
+    else{        
         %>
         <jsp:useBean id="conf" class="configpackage.Config"/>
         <%
@@ -38,7 +34,7 @@ HttpSession sesion = request.getSession();
 	<navbar-principal ng-init="menu.usuario='<%=sesion.getAttribute("nombre")%>'"></navbar-principal>
 	<div class="jumbotron">
             <div class="container">
-                <h1>Productos vendidos</h1>
+                <h1>Ventas específicas</h1>
             </div>
 	</div>
 
@@ -75,14 +71,25 @@ HttpSession sesion = request.getSession();
             </div>
             <br>
             <div id="tabla"></div>
-            <br>
-            <div id="divGrafica" class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <canvas id="grafica"></canvas>
+            <br>            
+            <div id="msj"></div>
+            
+            <div class="modal fade" id="modal-detalle">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3 class="modal-title">Detalle de venta</h3>
+                        </div>
+                        <div class="modal-body" id="detalle">                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <br>        
-            <div id="msj"></div>
+        
         </div>
         
         
@@ -93,8 +100,8 @@ HttpSession sesion = request.getSession();
         <script type="text/javascript" src = "../js/puntoDeVenta.js"></script>
         <script type="text/javascript" src ="../js/filtroTabla.js"></script>
         <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="../js/Chart.min.js"></script>        
-        <script type="text/javascript"> 
+        <script type="text/javascript">
+            var botones = "";
             $(function (){                    
                 $("#fechaInicial").datepicker();  
                 $("#fechaFinal").datepicker();
@@ -120,45 +127,18 @@ HttpSession sesion = request.getSession();
                 valores = final.split("/");
                 final = valores[2]+"-"+valores[0]+"-"+valores[1];
                 $("#msj").html("");
-                $.post("reporteProductosVendidos.jsp",{fechaInicial: inicial, fechaFinal: final},function(res){
+                $.post("reporteVentasEspecificas.jsp",{fechaInicial: inicial, fechaFinal: final},function(res){
                    if(res.tabla !== undefined){
                        $("#tabla").html(res.tabla);
-                        $('#tablaReporte').DataTable({paging:false,bInfo: false,bFilter:true});
-                        //Grafica                        
-                        var graficaLinea = {                            
-                            labels: [], 
-                            datasets : [
-                                {
-                                    label: "Productos más comprados",
-                                    fillColor: "rgba(151,187,205,0.2)",
-                                    strokeColor: "rgba(151,187,205,1)",
-                                    pointColor: "rgba(151,187,205,1)",
-                                    pointStrokeColor: "#fff",
-                                    pointHighlightFill: "#fff",
-                                    pointHighlightStroke: "rgba(151,187,205,1)",
-                                    data : []
-                                }
-                            ]
-                        };
-                        $("#grafica").show();
-                        //Inserta labels a la grafica
-                        for(var i=0;i<res.labels.length;i++){
-                            graficaLinea.labels.push(res.labels[i]);
-                        }
-                        //Ingresa datos a la grafica
-                        for(var i=0;i<res.data.length;i++){
-                            graficaLinea.datasets[0].data.push(res.data[i]);
-                        }
-
-                        var ctx = document.getElementById("grafica").getContext("2d");
-                            window.myLine = new Chart(ctx).Line(graficaLinea, {
-                                responsive: true,
-                                bezierCurve: false
-                            });
+                       $('#tablaReporte').DataTable({bInfo: true,bFilter:true,bPaginate: true, bLengthChange: true});                       
+                       botones = setInterval(function (){botonesPaginacion();},100);
+            
+                       
                    }
                    else if(res.error !== undefined){
                        $("#msj").html(res.error);
                        $("#tabla").hide("slow");
+                       clearInterval(botones);
                        setTimeout(function(){$("#tabla").html(""); $("#tabla").show();},1500);
                    }
                 },"json");
@@ -196,6 +176,7 @@ HttpSession sesion = request.getSession();
             }
             
             function mensaje(){
+                clearInterval(botones);
                 var mensaje = "<div id='mensaje' class='col-md-4 col-md-offset-3 animated slideInRight'> "
                         + "<div class='alert alert-danger' role='alert'>"
                         + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
@@ -204,9 +185,26 @@ HttpSession sesion = request.getSession();
                         + "</div></div>";
                 $("#msj").html(mensaje);
                 $("#tabla").hide("slow");
-                window.myLine.removeData();
-                $("#grafica").hide();
                 setTimeout(function(){$("#tabla").html(""); $("#tabla").show();},1500);
+            }     
+            
+            function botonesPaginacion(){
+                $(".paginate_button").addClass("btn");                               
+                $(".paginate_button").addClass("btn-default"); 
+                $(".current").addClass("active");
+            }
+            
+            function detalleVenta(id){
+                $.post("detalleVenta.jsp",{id: id}, function(res){
+                    if(res.exito !== undefined){
+                        $("#detalle").html(res.exito);
+                        $("#modal-detalle").modal("toggle");
+                    }
+                    else if(res.error !== undefined){
+                        $("#detalle").html(res.error);
+                        $("#modal-detalle").modal("toggle");
+                    }
+                },"json");
             }
             
             

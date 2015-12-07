@@ -1,18 +1,14 @@
 <%-- 
-    Document   : ventasPorMes
-    Created on : 3/12/2015, 10:24:26 AM
+    Document   : comprasPorMes
+    Created on : 6/12/2015, 10:54:18 PM
     Author     : ricesqgue
 --%>
 
-<%@page import="java.net.URL"%>
-<%@page import="java.util.Properties"%>
-<%@page import="java.io.InputStream"%>
 <%
-HttpSession sesion = request.getSession();
+    HttpSession sesion = request.getSession();
     if(sesion.getAttribute("nombre")==null){
-        response.sendRedirect("/puntoDeVenta/index.jsp"); 
+        response.sendRedirect("/puntoDeVenta/index.jsp");
     }
-    else{
         %>
         <jsp:useBean id="conf" class="configpackage.Config"/>
         <%
@@ -20,7 +16,6 @@ HttpSession sesion = request.getSession();
         conf.carga();
         String nombreEmpresa = conf.getNombreEmpresa();
         String tema = conf.getTema();
-    
 %>
 <!DOCTYPE html>
 <html lang="es" ng-app="puntoDeVenta">
@@ -31,13 +26,13 @@ HttpSession sesion = request.getSession();
 	<link rel="stylesheet" href="../css/puntoDeVenta.css">
 	<link rel="stylesheet" href="../css/icons.css">
         <link rel="stylesheet" href="../css/animate.css">
-        <title><%=nombreEmpresa %></title>
+        <title><%=nombreEmpresa%></title>
     </head>
     <body>
 	<navbar-principal ng-init="menu.usuario='<%=sesion.getAttribute("nombre")%>'"></navbar-principal>
 	<div class="jumbotron">
             <div class="container">
-                <h1>Ventas por mes</h1>
+                <h1>Compras por mes</h1>
             </div>
 	</div>
 
@@ -63,16 +58,17 @@ HttpSession sesion = request.getSession();
         <script type="text/javascript" src="../js/Chart.min.js"></script>
         <script type="text/javascript">      
             function consultaReporte(){                
-                $.post("reporteVentasPorMes.jsp",function(res){
+                $.post("reporteComprasPorMes.jsp",function(res){
                     if(res.tabla !== undefined){
                         $("#tabla").html(res.tabla);
                         $('#tablaReporte').DataTable({paging:false,bInfo: false,bFilter:false});
-                        //Grafica                        
+                        //Grafica
+                        $("#grafica").html("");
                         var graficaLinea = {                            
                             labels: [], 
                             datasets : [
                                 {
-                                    label: "Ventas por mes",
+                                    label: "Compras por mes",
                                     fillColor: "rgba(151,187,205,0.2)",
                                     strokeColor: "rgba(151,187,205,1)",
                                     pointColor: "rgba(151,187,205,1)",
@@ -96,7 +92,7 @@ HttpSession sesion = request.getSession();
                             window.myLine = new Chart(ctx).Line(graficaLinea, {
                                 responsive: true,
                                 bezierCurve: false
-                    });                                               
+                            });                                               
                     }
                     else if(res.error !== undefined){
                         $("#msj").html(res.error);
@@ -108,6 +104,3 @@ HttpSession sesion = request.getSession();
         </script>            
     </body>
 </html>
-<%
-    }
-%>

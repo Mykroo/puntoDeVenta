@@ -1,18 +1,14 @@
 <%-- 
-    Document   : productosVendidos
-    Created on : 4/12/2015, 05:34:47 PM
+    Document   : productosComprados
+    Created on : 6/12/2015, 10:50:03 PM
     Author     : ricesqgue
 --%>
 
-<%@page import="java.io.InputStream"%>
-<%@page import="java.util.Properties"%>
-<%@page import="java.net.URL"%>
 <%
 HttpSession sesion = request.getSession();
     if(sesion.getAttribute("nombre")==null){
-        response.sendRedirect("/puntoDeVenta/index.jsp"); 
-    }   
-    else{
+        response.sendRedirect("/puntoDeVenta/index.jsp");
+    }else{   
         %>
         <jsp:useBean id="conf" class="configpackage.Config"/>
         <%
@@ -38,7 +34,7 @@ HttpSession sesion = request.getSession();
 	<navbar-principal ng-init="menu.usuario='<%=sesion.getAttribute("nombre")%>'"></navbar-principal>
 	<div class="jumbotron">
             <div class="container">
-                <h1>Productos vendidos</h1>
+                <h1>Productos comprados</h1>
             </div>
 	</div>
 
@@ -68,7 +64,7 @@ HttpSession sesion = request.getSession();
                         </div>
                         
                         <div class="form-group">                    
-                            <button id="btnBusca" class="btn btn-info" onclick="$('#btnBusca').attr('disabled','disabled'); validaFechas();"><span class="icon-search"></span></button>
+                            <button  id="btnBusca" class="btn btn-info" onclick="$('#btnBusca').attr('disabled','disabled'); validaFechas();"><span class="icon-search"></span></button>
                         </div>                                
                     </div> 
                 </div>
@@ -81,7 +77,7 @@ HttpSession sesion = request.getSession();
                     <canvas id="grafica"></canvas>
                 </div>
             </div>
-            <br>        
+            <br>
             <div id="msj"></div>
         </div>
         
@@ -93,8 +89,8 @@ HttpSession sesion = request.getSession();
         <script type="text/javascript" src = "../js/puntoDeVenta.js"></script>
         <script type="text/javascript" src ="../js/filtroTabla.js"></script>
         <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="../js/Chart.min.js"></script>        
-        <script type="text/javascript"> 
+        <script type="text/javascript" src="../js/Chart.min.js"></script>
+        <script type="text/javascript">
             $(function (){                    
                 $("#fechaInicial").datepicker();  
                 $("#fechaFinal").datepicker();
@@ -120,10 +116,10 @@ HttpSession sesion = request.getSession();
                 valores = final.split("/");
                 final = valores[2]+"-"+valores[0]+"-"+valores[1];
                 $("#msj").html("");
-                $.post("reporteProductosVendidos.jsp",{fechaInicial: inicial, fechaFinal: final},function(res){
+                $.post("reporteProductosComprados.jsp",{fechaInicial: inicial, fechaFinal: final},function(res){
                    if(res.tabla !== undefined){
                        $("#tabla").html(res.tabla);
-                        $('#tablaReporte').DataTable({paging:false,bInfo: false,bFilter:true});
+                       $('#tablaReporte').DataTable({paging:false,bInfo: false,bFilter:true});
                         //Grafica                        
                         var graficaLinea = {                            
                             labels: [], 
@@ -155,10 +151,11 @@ HttpSession sesion = request.getSession();
                                 responsive: true,
                                 bezierCurve: false
                             });
+                         
                    }
                    else if(res.error !== undefined){
                        $("#msj").html(res.error);
-                       $("#tabla").hide("slow");
+                       $("#tabla").hide("slow");                       
                        setTimeout(function(){$("#tabla").html(""); $("#tabla").show();},1500);
                    }
                 },"json");
