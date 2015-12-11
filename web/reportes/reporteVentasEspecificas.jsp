@@ -12,7 +12,7 @@ JSONObject json = new JSONObject();
 String fechaInicial = request.getParameter("fechaInicial");
 String fechaFinal = request.getParameter("fechaFinal");
 
-String query = "select idventatotal,fechaespanol(date(fecha)) as fecha, total,descuento, pagoEfectivo, pagoTarjeta from ventatotal where date(fecha) between '"+fechaInicial+"' and '"+fechaFinal+"'";
+String query = "call reporteVentasEspecificas('"+fechaInicial+"','"+fechaFinal+"');"; 
 objConn.Consult(query);
 int n = 0;
 if(objConn.rs != null){

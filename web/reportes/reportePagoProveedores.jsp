@@ -1,9 +1,8 @@
 <%-- 
-    Document   : reporteComprasEspecificas
-    Created on : 6/12/2015, 11:02:18 PM
+    Document   : reportePagoProveedores
+    Created on : 10/12/2015, 08:00:40 PM
     Author     : ricesqgue
 --%>
-
 <jsp:useBean id="objConn" class="mysqlpackage.MySqlConn"/>
 <%@page import="org.json.simple.JSONObject"%>
 
@@ -12,7 +11,7 @@ JSONObject json = new JSONObject();
 String fechaInicial = request.getParameter("fechaInicial");
 String fechaFinal = request.getParameter("fechaFinal");
 
-String query = "call reporteComprasEspecificas('"+fechaInicial+"','"+fechaFinal+"');";
+String query = " call reportePagoProveedores('"+fechaInicial+"','"+fechaFinal+"');";
 objConn.Consult(query);
 int n = 0;
 if(objConn.rs != null){
@@ -29,11 +28,10 @@ if(n>0){
             +"<table id='tablaReporte' class='table table-striped table-bordered' >"
                 +"<thead>"
                     +"<tr class='info' >"
-                        +"<th>Folio</th>"
-                        +"<th>Fecha</th>"
-                        +"<th>Folio nota</th>"
+                        +"<th>ID Abono</th>"
                         +"<th>Proveedor</th>"
-                        +"<th>Total</th>"                      
+                        +"<th>Cantidad</th>"                      
+                        +"<th>Fecha</th>"
                         +"<th>Detalle</th>"                           
                     +"</tr>"                       
                 +"</thead>"
@@ -43,16 +41,13 @@ if(n>0){
                         tabla += "<td>"+objConn.rs.getString(2)+"</td>";
                         tabla += "<td>"+objConn.rs.getString(3)+"</td>";
                         tabla += "<td>"+objConn.rs.getString(4)+"</td>";
-                        tabla += "<td>$"+objConn.rs.getString(5)+"</td>";
-                        totalCompras += objConn.rs.getFloat("total"); 
-                        tabla += "<td><span class=\'icon-eye pointer\' onclick='detalleCompra(\""+objConn.rs.getString(1)+"\");'></span></td>";
+                        tabla += "<td><span class=\'icon-eye pointer\' onclick='detalleAbono(\""+objConn.rs.getString(1)+"\");'></span></td>";                                             
                         tabla+="</tr>";                                   
                         objConn.rs.next(); 
                     }                           
                     tabla+="</tbody>"
                 +"</table>"                    
-                +"</div>"
-                + "<br><center><h3>Compra total: $"+totalCompras+"</h3></center>";
+                +"</div>";
     json.put("tabla", tabla);
                            
 }else{

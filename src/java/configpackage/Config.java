@@ -28,14 +28,12 @@ public class Config implements Serializable{
         String relativePath = "/index.jsp";
         ServletContext sc = request.getServletContext();
         String realPath = sc.getRealPath(relativePath);
-        System.out.println("Ruta: " + realPath);
         String [] rutaArray = realPath.split("/"); 
         this. ruta = "";
         for(int i =0; i< rutaArray.length-3;i++){
             this.ruta += (rutaArray[i]+"/");
         }
-        this.ruta += "puntoDeVenta.config";
-        System.out.println("Final final: " + ruta);
+        this.ruta += "puntoDeVenta.config";       
     }
 
     

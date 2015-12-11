@@ -12,7 +12,7 @@
 String fechaInicial = request.getParameter("fechaInicial");
 String fechaFinal = request.getParameter("fechaFinal");
 JSONObject json = new JSONObject();
-String query = " select p.codigo,p.descripcion, m.marca,c.categoria, concat_ws(' ',pr.nombre,pr.apellidoPaterno,pr.apellidoMaterno) as proveedor, sum(vp.cantidad) as cantidad from ventaproducto vp natural join producto p natural join marcas m natural join categorias c natural join ventatotal vt natural join proveedor pr where date(vt.fecha) between '"+fechaInicial+"' and '"+fechaFinal+"' and p.activo=1 group by p.idProducto;";
+String query = "call reporteProductosVendidos('"+fechaInicial+"','"+fechaFinal+"');";
 objConn.Consult(query);
 int n = 0;
 if(objConn.rs != null){

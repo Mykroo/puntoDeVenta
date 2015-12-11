@@ -11,7 +11,7 @@
 JSONObject json = new JSONObject();
 String [] meses = {"","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
 
-String query = "select month(fecha) as mes, concat('$',round(sum(pagoEfectivo),2)) as efectivo,concat('$',round(sum(pagoTarjeta),2)) as terjeta , concat('$',round(sum(total-descuento),2)) as total, round(sum(total-descuento),2) as totalNum from ventatotal where year(fecha) = year(now()) group by mes;";
+String query = "call reporteVentasPorMes();";
 
 objConn.Consult(query);
 int n = 0;

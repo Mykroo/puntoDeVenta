@@ -5,18 +5,19 @@
 --%>
 
 <%
-  
     HttpSession sesion = request.getSession();
     if(sesion.getAttribute("nombre")==null){
         response.sendRedirect("/puntoDeVenta/index.jsp"); 
     }
     else{
+            
         %>
         <jsp:useBean id="conf" class="configpackage.Config"/>
-        <%      
-        
+        <%
+        conf.setRuta(request);
+        conf.carga();
         String nombreEmpresa = conf.getNombreEmpresa();
-        String tema = conf.getTema(); 
+        String tema = conf.getTema();
 
 %>
 <jsp:useBean id="objConn" class="mysqlpackage.MySqlConn"/>
@@ -40,7 +41,7 @@
             </div>
 	</div>
                         
-       <div class="container">              
+        <div class="container">    
             <div id="contenido">
                 <div class="row">
                     <div class="col-md-6">
@@ -125,7 +126,8 @@
         <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
         <script type="text/javascript">           
             
-            function cargaCorte(){;
+            function cargaCorte(){
+                
                 $.post("consultaCorteDia.jsp",function(res){
                     if(res.exito !== undefined){
                         $("#totalVentas").html(" $"+res.totalVentas);
